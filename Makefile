@@ -1,22 +1,22 @@
 serve:
 	#python manage.py runserver
-	python3 manage.py runserver
+	python manage.py runserver
 
 migrate:
-	python3 manage.py migrate
+	python manage.py migrate
 
 migrations:
-	python3 manage.py makemigrations $(app)
+	python manage.py makemigrations $(app)
 
 collectstatic:
-	python3 manage.py collectstatic
+	python manage.py collectstatic
 
 app:
 	#django-admin startapp <name>
-	python3 manage.py startapp $(name)
+	python manage.py startapp $(name)
 
 check:
-	python3 manage.py check
+	python manage.py check
 
 test:
 
