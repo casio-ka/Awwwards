@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'cloudinary',
+    'crispy_forms',
+    'fontawesome_5',
 
     'project',
 ]
@@ -139,3 +141,6 @@ cloudinary.config(
   api_key = os.environ.get('CLOUDINARY_API_KEY'), 
   api_secret = os.environ.get('CLOUDINARY_API_SECRET'), 
 )
+
+LOGOUT_REDIRECT_URL = "login"
+LOGIN_REDIRECT_URL="welcome"
