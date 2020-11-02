@@ -8,7 +8,10 @@ from .forms import RegisterForm, PostForm,UpdateUserForm,UpdateProfileForm,RateF
 from .models import Post,Profile, User,Rate
 from django.db.models import Avg
 import math
+import random
+
 # Create your views here.
+
 def home(request):
     posts = Post.objects.all().order_by("-posted")
     if request.method == 'POST':
@@ -70,17 +73,18 @@ def postdetail(request,post_id):
         if form.is_valid():
             rate = form.save(commit=False)
             rate.post= post
-            #adding the user here.
+            #adding the user here
             rate.user = request.user
-            rate.total = (rate.design+rate.usability+rate.content)/3
+            #total calculation
+            rate.total = (rate.design+rate.usability+rate.content+rate.creativity)/4
             rate.save()
     else:
         form = RateForm()
-        design = Rate.objects.filter(post_id=post_id).aggregate(Avg('design'))['design__avg']
-        usability = Rate.objects.filter(post_id=post_id).aggregate(Avg('usability'))['usability__avg']
-        content = Rate.objects.filter(post_id=post_id).aggregate(Avg('content'))['content__avg']
-        creativity = Rate.objects.filter(post_id=post_id).aggregate(Avg('creativity'))['creativity__avg']
-        total = Rate.objects.filter(post_id=post_id).aggregate(Avg('total'))['total__avg']
+    design = Rate.objects.filter(post_id=post_id).aggregate(Avg('design'))['design__avg']
+    usability = Rate.objects.filter(post_id=post_id).aggregate(Avg('usability'))['usability__avg']
+    content = Rate.objects.filter(post_id=post_id).aggregate(Avg('content'))['content__avg']
+    creativity = Rate.objects.filter(post_id=post_id).aggregate(Avg('creativity'))['creativity__avg']
+    total = Rate.objects.filter(post_id=post_id).aggregate(Avg('total'))['total__avg']
     
     if design is None:
         design = 0
