@@ -22,9 +22,9 @@
   <img src="{{ post.picture.url}}" class="card-img-top" width='auto' height='300' alt="{{post.projectname}}">
   <div class="card-body">
   <h5 class="card-title">{{post.projectname|title}}
-  <a class='float-right' href="{{post.link}} " target="_blank">Visit Site</a>
+  <a class='float-right' href="{{post.website}} " target="_blank">Visit Site</a>
    </h5> 
-     <p class="card-footer " ><img class="rounded-circle" src="{{post.user.profile.profile_picture.url}}"  height ='30px' width='30px' alt="">
+     <p class="card-footer " ><img class="rounded-circle" src="{{post.user.profile.prof_pic.url}}"  height ='30px' width='30px' alt="">
         {{post.user.username|title}} <span style="float:right">{{post.posted|date}}</span>
                 </p>
   </div>
