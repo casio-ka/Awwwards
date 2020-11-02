@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% block content %}
 {% load static%}
+{% block content %}
+
 <div class="container mt-2">
     <div class="row">
         <div class="col-md-3"></div>
@@ -9,7 +10,7 @@
         {%if user.profile.profile_picture%}
           <img class="rounded-circle  d-block mx-auto" height='250px' width='250px' src="{{ user.profile.profile_picture.url }}">
          {%else%}
-         <img class="rounded-circle" src="{% static 'images/default.png' %}" height='250px' width='250px'  alt="">
+         <img class="rounded-circle" src="https://res.cloudinary.com/dw9y1xy4x/image/upload/v1603747573/insta/default-profile_neorvq.png" height='250px' width='250px'  alt="">
          {% endif%}
             
             <h5 class="text-center mt-3">{{user.username}}</h5>
@@ -23,4 +24,4 @@
 </div>
 
 
-{% endblock %}
+{% endblock content %}

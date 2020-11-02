@@ -9,5 +9,5 @@ urlpatterns=[
     path('profile/<username>/edit', edit_profile, name='edit'),
     path('details/<post_id>/', postdetail, name='details'),
     path('search/',search_results, name='search_results'),
-    path("logout/", LogoutView.as_view(), name="logout"),
+    path('logout/', LogoutView.as_view(), name='logout'),
 ]

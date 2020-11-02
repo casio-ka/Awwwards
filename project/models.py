@@ -17,7 +17,7 @@ class Profile(models.Model):
 
 
 class Post(models.Model):
-    name = models.CharField(max_length=155)
+    projectname = models.CharField(max_length=155)
     website = models.CharField(max_length=100)
     description = models.CharField(max_length=255)
     picture = CloudinaryField('image')
@@ -25,7 +25,7 @@ class Post(models.Model):
     posted = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.name)
+        return str(self.projectname)
 
     def delete_post(self):
         self.delete()
@@ -43,3 +43,21 @@ class Post(models.Model):
     def posts(cls):
         return cls.objects.all()
 
+class Rate(models.Model):
+    design = models.IntegerField(null=True,default=0)
+    usability = models.IntegerField(null=True,default=0)
+    content = models.IntegerField(null=True,default=0)
+    total =  models.FloatField(max_length=8, blank=True,null=True,default=0)
+    user = models.ForeignKey(User,null = True, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,related_name='rate',null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.post} Rate'
+
+    def save_rate(self):
+        self.save()
+
+    def delete_rate(self):
+        self.delete()
+
+    

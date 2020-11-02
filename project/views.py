@@ -4,44 +4,13 @@ from django.http  import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
-from .forms import RegisterForm, PostForm,UpdateUserForm,UpdateProfileForm
-from .models import Post,Profile, User
+from .forms import RegisterForm, PostForm,UpdateUserForm,UpdateProfileForm,RateForm
+from .models import Post,Profile, User,Rate
 from django.db.models import Avg
 import math
-import random
 # Create your views here.
 def home(request):
-    try:
-        posts = Post.objects.all().order_by("-posted")
-        if len(posts) > 1:
-            rpost = random.randint(1, len(posts)-1)
-         
-            randompost = Post.objects.get(pk=rpost)
-            design = Rate.objects.filter(post=randompost).aggregate(Avg('design'))['design__avg']
-            usability = Rate.objects.filter(post=randompost).aggregate(Avg('usability'))['usability__avg']
-            content = Rate.objects.filter(post=randompost).aggregate(Avg('content'))['content__avg']
-            creativity = Rate.objects.filter(post=randompost).aggregate(Avg('creativity'))['creativity__avg']
-         
-            if design is None:
-                design = 0
-                content = 0
-                usability = 0
-                creativity = 0
-                designpercentage = 0
-                usabilitypercentage = 0
-                contentpercentage = 0
-                creativitypercentage = 0
-             
-            else:
-                designpercentage = (design/10) *100
-                usabilitypercentage = (usability/10) *100
-                contentpercentage = (content/10) *100
-                creativitypercentage = (creativity/10) *100
-               
-        else:
-            randompost = None
-    except Post.DoesNotExist:
-        posts = None
+    posts = Post.objects.all().order_by("-posted")
     if request.method == 'POST':
         uform = PostForm(request.POST, request.FILES)
         if uform.is_valid():
@@ -51,7 +20,7 @@ def home(request):
             return HttpResponseRedirect(request.path_info)
     else:
         uform = PostForm()
-    return render(request, 'index.html',{'uform': uform,'posts':posts,'randompost':randompost,})
+    return render(request, 'index.html',{'uform': uform,'posts':posts})
     
 
 def register(request):
@@ -101,16 +70,17 @@ def postdetail(request,post_id):
         if form.is_valid():
             rate = form.save(commit=False)
             rate.post= post
+            #adding the user here.
             rate.user = request.user
             rate.total = (rate.design+rate.usability+rate.content)/3
             rate.save()
     else:
         form = RateForm()
-    design = Rate.objects.filter(post_id=post_id).aggregate(Avg('design'))['design__avg']
-    usability = Rate.objects.filter(post_id=post_id).aggregate(Avg('usability'))['usability__avg']
-    content = Rate.objects.filter(post_id=post_id).aggregate(Avg('content'))['content__avg']
-    creativity = Rate.objects.filter(post_id=post_id).aggregate(Avg('creativity'))['creativity__avg']
-    total = Rate.objects.filter(post_id=post_id).aggregate(Avg('total'))['total__avg']
+        design = Rate.objects.filter(post_id=post_id).aggregate(Avg('design'))['design__avg']
+        usability = Rate.objects.filter(post_id=post_id).aggregate(Avg('usability'))['usability__avg']
+        content = Rate.objects.filter(post_id=post_id).aggregate(Avg('content'))['content__avg']
+        creativity = Rate.objects.filter(post_id=post_id).aggregate(Avg('creativity'))['creativity__avg']
+        total = Rate.objects.filter(post_id=post_id).aggregate(Avg('total'))['total__avg']
     
     if design is None:
         design = 0
