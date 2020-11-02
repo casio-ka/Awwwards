@@ -47,6 +47,7 @@ class Rate(models.Model):
     design = models.IntegerField(null=True,default=0)
     usability = models.IntegerField(null=True,default=0)
     content = models.IntegerField(null=True,default=0)
+    creativity = models.IntegerField(null=True,default=0)
     total =  models.FloatField(max_length=8, blank=True,null=True,default=0)
     user = models.ForeignKey(User,null = True, on_delete=models.CASCADE)
     post = models.ForeignKey(Post,related_name='rate',null=True, on_delete=models.CASCADE)
